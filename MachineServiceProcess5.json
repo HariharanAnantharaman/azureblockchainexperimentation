@@ -1,0 +1,203 @@
+{
+  "ApplicationName": "MachineServiceProcess5",
+  "DisplayName": "N2Approval flow for machine repair",
+  "Description": "To ensure that repair is approved by all stakeholders",
+  "ApplicationRoles": [
+    {
+      "Name": "StoreManager",
+      "Description": "First party who stores or transports a shipment."
+    },
+    {
+      "Name": "Technician",
+      "Description": "A party who stores or transports a shipment."
+    }
+	
+  ],
+  "Workflows": [
+    {
+      "Name": "MachineServiceProcess5",
+      "DisplayName": "Cash Dispenser Repair",
+      "Description": "Main workflow to track repair of cash dispensing machines",
+      "Initiators": [ "StoreManager" ],
+      "StartState": "RepairReported",
+      "Properties": [
+        {
+          "Name": "State",
+          "DisplayName": "Repair Reported",
+          "Description": "Store manager has reported a problem with Cash Dispensing machine",
+          "Type": {
+            "Name": "state"
+          }
+        },
+        {
+          "Name": "StoreManager",
+          "DisplayName": "Store Manager",
+          "Description": "The owner of the end-to-end shipment.",
+          "Type": {
+            "Name": "StoreManager"
+          }
+        },
+        {
+          "Name": "Technician",
+          "DisplayName": "Technician",
+          "Description": "Technician to do the servicing.",
+          "Type": {
+            "Name": "Technician"
+          }
+        },
+		
+		  {
+          "Name": "MachineNumber",
+          "DisplayName": "Machine Serial Number",
+          "Description": "Machine Serial number.",
+          "Type": {
+            "Name": "string"
+          }
+        }
+      ],
+      "Constructor": {
+        "Parameters": [
+          {
+            "Name": "storeManager",
+            "Description": "...",
+            "DisplayName": "Store Manager",
+            "Type": {
+              "Name": "StoreManager"
+            }
+          },
+          {
+            "Name": "technician",
+            "Description": "...",
+            "DisplayName": "Technician",
+            "Type": {
+              "Name": "Technician"
+            }
+          },
+          {
+            "Name": "machineNumber",
+            "Description": "...",
+            "DisplayName": "machineNumber",
+            "Type": {
+              "Name": "string"
+            }
+          }
+        ]
+      },
+      "Functions": [
+        {
+          "Name": "initiateRepair",
+          "DisplayName": "Initiate Repair",
+          "Description": "...",
+          "Parameters": []
+        },
+        {
+          "Name": "startService",
+          "DisplayName": "Start the Service",
+          "Description": "...",
+          "Parameters": []
+        },
+		{
+          "Name": "completeService",
+          "DisplayName": "Complete the service",
+          "Description": "...",
+          "Parameters": []
+        },
+		{
+          "Name": "approveService",
+          "DisplayName": "Approves the service",
+          "Description": "...",
+          "Parameters": []
+        },
+        {
+          "Name": "Complete",
+          "DisplayName": "Complete",
+          "Description": "...",
+          "Parameters": []
+        }
+      ],
+      "States": [
+        {
+          "Name": "RepairReported",
+          "DisplayName": "Repair Reported",
+          "Description": "...",
+          "PercentComplete": 0,
+          "Value": 0,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": [],
+              "AllowedInstanceRoles": [ "Technician" ],
+              "Description": "...",
+              "Function": "startService",
+              "NextStates": [ "ServiceStarted" ],
+              "DisplayName": "Service Started"
+            }
+          ]
+        },
+        {
+          "Name": "ServiceStarted",
+          "DisplayName": "Technician has started to service the repair",
+          "Description": "...",
+          "PercentComplete": 20,
+          "Value": 1,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": [ ],
+              "AllowedInstanceRoles": [ "Technician" ],
+              "Description": "...",
+              "Function": "completeService",
+              "NextStates": [ "ServiceCompleted" ],
+              "DisplayName": "Service Completed"
+            }
+          ]
+        },
+        {
+          "Name": "ServiceCompleted",
+          "DisplayName": "Service Completed",
+          "Description": "...",
+          "PercentComplete": 80,
+          "Value": 2,
+          "Style": "Success",
+          "Transitions": [
+			{
+              "AllowedRoles": [ ],
+              "AllowedInstanceRoles": [ "StoreManager" ],
+              "Description": "...",
+              "Function": "approveService",
+              "NextStates": [ "ServiceApproved" ],
+              "DisplayName": "Service completion has been approved"
+            }
+		  ]
+        },
+        {
+          "Name": "ServiceApproved",
+          "DisplayName": "Service for the repair approved and problem has been rectified",
+          "Description": "...",
+          "PercentComplete": 95,
+          "Value": 3,
+          "Style": "Success",
+          "Transitions": [
+			{
+              "AllowedRoles": [ ],
+              "AllowedInstanceRoles": [ "StoreManager" ],
+              "Description": "...",
+              "Function": "Complete",
+              "NextStates": [ "Completed" ],
+              "DisplayName": "Service Request has been completed"
+            }
+		  ]
+        },
+		{
+          "Name": "Completed",
+          "DisplayName": "Completed",
+          "Description": "...",
+          "PercentComplete": 100,
+          "Value": 2,
+          "Style": "Success",
+          "Transitions": []
+        }
+      ]
+    }
+  ]
+}
